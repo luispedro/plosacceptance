@@ -32,7 +32,7 @@ style.use('ggplot')
 gc = stats.kde.gaussian_kde(deltas)
 c = gc(np.arange(800)) * len(deltas)
 
-plt.hist(deltas,np.arange(802))
+plt.hist(deltas,np.arange(802), color='k')
 plt.plot(c, lw=8)
 plt.xlabel('Nr days')
 plt.ylabel("Papers (N=360)")
