@@ -30,6 +30,8 @@ if len(argv) < 2:
 
 basedir = argv[1]
 journal = basedir[len('data/'):]
+if journal[-1] == '/':
+    journal = journal[:-1]
 
 deltas = []
 for f in glob(basedir+'/*.xml'):
@@ -44,7 +46,7 @@ style.use('ggplot')
 gc = stats.kde.gaussian_kde(deltas)
 c = gc(np.arange(800)) * len(deltas)
 
-plt.hist(deltas,np.arange(802), color='k')
+h,_,_ = plt.hist(deltas,np.arange(802), color='k')
 plt.plot(c, lw=8)
 plt.xlabel('Nr days')
 plt.ylabel("Papers (N={})".format(len(deltas)))
@@ -52,6 +54,9 @@ avg = np.mean(deltas)
 median = np.median(deltas)
 std = np.std(deltas)
 mode = c.argmax()
-plt.text(240,4,"Average is {} (std: {})\nMedian is {}\nMode (of KDE fit) is {}".format(int(avg),int(std),median,mode), fontdict={'size':24})
+
+ytext = h.max()*.75
+plt.text(240,ytext,"Average is {} (std: {})\nMedian is {}\nMode (of KDE fit) is {}".format(int(avg),int(std),median,mode), fontdict={'size':24})
+plt.title(journal)
 plt.savefig('stataccept-{}.png'.format(journal))
 
