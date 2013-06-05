@@ -4,11 +4,13 @@ from itertools import chain
 import re
 
 journals = [
-#   'plos1' :  'plosone',
-    'ploscompbiol',
-    'plosgenetics',
-    'plosbiology',
-    'plosntds',
+    #('plosone' , 'PLoSONE',),
+    ('ploscompbiol','PLoSCompBiol',),
+    ('plosgenetics', 'PLoSGenetics',),
+    ('plosbiology', 'PLoSBiology',),
+    ('plosntds', 'PLoSNTD',),
+    ('plospathogens', 'PLoSPathogens'),
+    ('plosmedicine', 'PLoSMedicine'),
 ]
 
 
@@ -20,7 +22,7 @@ def get_uris(journal, listf):
     dois = set([mat.group(1) for mat in pat.finditer(open(listf).read())])
     return [(xml_uri(d),d) for d in dois]
 
-for journal in journals:
+for journal,_ in journals:
     for f,d in chain(*[get_uris(journal, 'data/{}/list{}.html'.format(journal, i)) for i in xrange(30)]):
         outfile = "data/{}/{}.xml".format(journal, d)
         if not path.exists(outfile):
